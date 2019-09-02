@@ -67,3 +67,13 @@ int main()
     }
     fout << tr << " " << fa << endl;
 }
+/*
+Executing...
+   Test 1: TEST OK [0.004 secs, 1372 KB]
+   Test 2: TEST OK [0.004 secs, 1348 KB]
+   Test 3: TEST OK [0.004 secs, 1480 KB]
+   Test 4: TEST OK [0.004 secs, 1396 KB]
+   Test 5: TEST OK [0.004 secs, 1388 KB]
+   Test 6: TEST OK [0.004 secs, 1412 KB]
+   Test 7: TEST OK [0.004 secs, 1380 KB]
+   Test 8: TEST OK [0.007 secs, 1396 KB]*/
