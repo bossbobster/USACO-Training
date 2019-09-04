@@ -88,3 +88,14 @@ int main()
     }
     fout << solutions << endl;
 }
+
+/*
+Executing...
+Test 1: TEST OK [0.007 secs, 1392 KB]
+Test 2: TEST OK [0.004 secs, 1472 KB]
+Test 3: TEST OK [0.004 secs, 1376 KB]
+Test 4: TEST OK [0.021 secs, 1404 KB]
+Test 5: TEST OK [0.035 secs, 1392 KB]
+Test 6: TEST OK [0.011 secs, 1360 KB]
+Test 7: TEST OK [0.067 secs, 1468 KB]
+*/
