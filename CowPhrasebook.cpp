@@ -7,6 +7,8 @@ using namespace std;
 
 unordered_set<string> phrases;
 bool str[61];
+string p1[100000];
+string p2[100000];
 int main()
 {
     int m, n, total = 0;
