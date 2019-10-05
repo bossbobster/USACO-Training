@@ -45,6 +45,8 @@ void findLights(int x, int y)
     while(lower->first.x == x && lower->first.y == y && lower != lights.end())
     {
         lightOn[lower->second.x][lower->second.y] = true;
+        if(visited[lower->second.x - 1][lower->second.y] || visited[lower->second.x + 1][lower->second.y] || visited[lower->second.x][lower->second.y - 1] || visited[lower->second.x][lower->second.y + 1])
+            findLights(lower->second.x, lower->second.y);
         lower ++;
     }
     findLights(x + 1, y);
@@ -68,14 +70,9 @@ int main()
     }
     sort(lights.begin(), lights.end(), cpr);
     findLights(1, 1);
-    for(int i = 0; i < n + n; i ++)
-    {
-        for(int i = 1; i <= n * n; i ++)
-            visited[i / n][i % n] = false;
-        findLights(1, 1);
-    }
     for(int i = 0; i <= n; i ++)
         for(int j = 0; j <= n; j ++)
             total += lightOn[i][j]==true? 1:0;
     fout << total << endl;
 }
+
