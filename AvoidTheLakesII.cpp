@@ -28,9 +28,6 @@ void solve()
     }
     for(int i = 0; i < k; i ++)
     {
-        for(int i = 0; i <= n + 5; i ++)
-            for(int j = 0; j <= m + 5; j ++)
-                visited[i][j] = false;
         nextInLine.push({inputs[i][0], inputs[i][1]});
         s = 0;
         do
