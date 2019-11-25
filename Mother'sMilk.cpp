@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <fstream>
 #include <algorithm>
 #include <set>
 #include <queue>
@@ -49,12 +48,12 @@ void findAll()
             vals[previous] -= (caps[to] - vals[to]);
             vals[to] = caps[to];
         }
-        if(visited[vals[0] * 400 + vals[1] * 20 + vals[2]])
+        if(visited[vals[0] * 441 + vals[1] * 21 + vals[2]])
         {
             nextInLine.pop();
             continue;
         }
-        visited[vals[0] * 400 + vals[1] * 20 + vals[2]] = true;
+        visited[vals[0] * 441 + vals[1] * 21 + vals[2]] = true;
         nextInLine.push({{vals[0], vals[1], vals[2]}, 0, 1});
         nextInLine.push({{vals[0], vals[1], vals[2]}, 0, 2});
         nextInLine.push({{vals[0], vals[1], vals[2]}, 1, 0});
