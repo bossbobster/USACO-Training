@@ -64,3 +64,53 @@ int main()
     }
     fout << ans << endl;
 }
+
+
+// BETTER O(N LOG N) SOLUTION (other one is O(N sqrt N))
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+struct meal
+{
+    long long fl, sp;
+};
+meal meals[100010];
+long long pre[100010];
+long long n, m, cur = 0, maxN = 0, sq, ans = 1000000000000;
+
+long long prec[100010][35];
+void sparse(int n)
+{
+    for(int i = 0; i < n; i ++)
+        prec[i][0] = meals[i].sp;
+    for(int i = 1; i <= floor(log2(n)); i ++)
+        for(int j = 0; j <= n - (1 << i); j ++)
+            prec[j][i] = max(prec[j][i - 1], prec[j + (1 << (i - 1))][i - 1]);
+}
+long long maxQ(int l, int r)
+{
+    int log = floor(log2(r - l + 1));
+    return max(prec[l][log], prec[r - (1 << log) + 1][log]);
+}
+
+int main()
+{
+    cin >> n >> m;
+    for(int i = 0; i < n; i ++)
+        cin >> meals[i].fl >> meals[i].sp;
+    sparse(n);
+    for(int i = 0; i <= n; i ++)
+    {
+        pre[i] = cur;
+        cur += meals[i].fl;
+    }
+    for(int i = 0; i < n; i ++)
+    {
+        if(pre[n] - pre[i] < m) break;
+        long long *it = lower_bound(pre + i, pre + n, m + pre[i]);
+        ans = min(ans, maxQ(i, it - pre - 1));
+    }
+    cout << ans << endl;
+}
