@@ -1,3 +1,4 @@
+// NOT A USACO PROBLEM
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
