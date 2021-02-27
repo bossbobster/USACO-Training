@@ -3,8 +3,9 @@
 #include <math.h>
 using namespace std;
 
+int nums[100010];
 // updates value at upIdx to val.
-void update(int nums[], int* tree, int l, int r, int curIdx, int upIdx, int val)
+void update(int* tree, int l, int r, int curIdx, int upIdx, int val)
 {
     if(l == r)
     {
@@ -14,13 +15,13 @@ void update(int nums[], int* tree, int l, int r, int curIdx, int upIdx, int val)
     }
     int mid = (l + r) / 2;
     if(upIdx >= l && upIdx <= mid)
-        update(nums, tree, l, mid, curIdx * 2 + 1, upIdx, val);
+        update(tree, l, mid, curIdx * 2 + 1, upIdx, val);
     else
-        update(nums, tree, mid + 1, r, curIdx * 2 + 2, upIdx, val);
+        update(tree, mid + 1, r, curIdx * 2 + 2, upIdx, val);
     tree[curIdx] = min(tree[curIdx * 2 + 1], tree[curIdx * 2 + 2]);
 }
 // get the min from lq to rq in the array
-int minQ(int nums[], int* tree, int l, int r, int lq, int rq, int curIdx)
+int minQ(int* tree, int l, int r, int lq, int rq, int curIdx)
 {
     if(lq == rq)
         return nums[lq];
@@ -29,7 +30,7 @@ int minQ(int nums[], int* tree, int l, int r, int lq, int rq, int curIdx)
     if(lq <= l && rq >= r)
         return tree[curIdx];
     int mid = (l + r) / 2;
-    return min(minQ(nums, tree, l, mid, lq, rq, curIdx * 2 + 1), minQ(nums, tree, mid + 1, r, lq, rq, curIdx * 2 + 2));
+    return min(minQ(tree, l, mid, lq, rq, curIdx * 2 + 1), minQ(tree, mid + 1, r, lq, rq, curIdx * 2 + 2));
 }
 // recursive function useful for making segment tree
 int makeTreeRec(int nums[], int* tree, int l, int r, int curIdx)
