@@ -30,6 +30,7 @@ int main()
         curD = nextInLine.top().first;
         curN = nextInLine.top().second;
         nextInLine.pop();
+        if(len[curN] < curD) continue;
         for(int i = 0; i < adj[curN].size(); i ++)
             if(len[curN] + adj[curN][i].second < len[adj[curN][i].first])
             {
