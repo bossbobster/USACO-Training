@@ -3,26 +3,22 @@
 using namespace std;
 
 int nums[100010];
-bool used[100010];
 int n, m;
 vector<int> cur;
-void printAll(int n1, int idx)
+void printAll(int idx, int lef)
 {
-    if(n1 == 0)
+    if(lef == 0)
     {
         for(int i = 0; i < n; i ++)
             cout << cur[i] << " ";
         cout << "\n";
         return;
     }
-    for(int i = n - n1 + idx; i < m - n1 + 1; i ++)
+    for(int i = idx; i <= m - lef; i ++)
     {
-        if(used[i]) continue;
-        cur[n - n1] = nums[i];
-        used[i] = true;
-        printAll(n1 - 1, idx);
-        idx ++;
-        used[i] = false;
+        cur.push_back(nums[i]);
+        printAll(i + 1, lef - 1);
+        cur.pop_back();
     }
 }
 
@@ -32,6 +28,5 @@ int main()
     for(int i = 0; i < m; i ++)
         cin >> nums[i];
     cin >> n;
-    for(int i = 0; i < n; i ++) cur.push_back(0);
-    printAll(n, 0);
+    printAll(0, n);
 }
