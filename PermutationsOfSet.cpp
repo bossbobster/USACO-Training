@@ -3,13 +3,13 @@
 #include <vector>
 using namespace std;
 
-int nums[20];
-bool used[20];
+int nums[100010];
+bool used[100010];
 int n, m;
 vector<int> cur;
-void printAll(int n1)
+void printAll(int cnt)
 {
-    if(n1 == 0)
+    if(cnt == n)
     {
         for(int i = 0; i < n; i ++)
             cout << cur[i] << " ";
@@ -19,10 +19,9 @@ void printAll(int n1)
     for(int i = 0; i < m; i ++)
     {
         if(used[i]) continue;
-        cur[n - n1] = nums[i];
-        used[i] = true;
-        printAll(n1 - 1);
-        used[i] = false;
+        cur.push_back(nums[i]); used[i] = true;
+        printAll(cnt + 1);
+        cur.pop_back(); used[i] = false;
     }
 }
 
@@ -32,6 +31,5 @@ int main()
     for(int i = 0; i < m; i ++)
         cin >> nums[i];
     cin >> n;
-    for(int i = 0; i < n; i ++) cur.push_back(0);
-    printAll(n);
+    printAll(0);
 }
