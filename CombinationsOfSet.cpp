@@ -2,21 +2,23 @@
 #include <iostream>
 using namespace std;
 
-int nums[1000000];
-bool used[1000000];
+int nums[100010];
+bool used[100010];
 int n, m;
-string cur = "";
+vector<int> cur;
 void printAll(int n1, int idx)
 {
     if(n1 == 0)
     {
-        cout << cur << "\n";
+        for(int i = 0; i < n; i ++)
+            cout << cur[i] << " ";
+        cout << "\n";
         return;
     }
-    for(int i = n - n1 + idx; i < n - n1 + m - n + 1; i ++)
+    for(int i = n - n1 + idx; i < m - n1 + 1; i ++)
     {
         if(used[i]) continue;
-        cur[n - n1] = nums[i] + '0';
+        cur[n - n1] = nums[i];
         used[i] = true;
         printAll(n1 - 1, idx);
         idx ++;
@@ -30,6 +32,6 @@ int main()
     for(int i = 0; i < m; i ++)
         cin >> nums[i];
     cin >> n;
-    for(int i = 0; i < n; i ++) cur += "0";
+    for(int i = 0; i < n; i ++) cur.push_back(0);
     printAll(n, 0);
 }
