@@ -1,0 +1,147 @@
+#include <iostream>
+#include <string.h>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <iomanip>
+#include <algorithm>
+#include <math.h>
+#include <cmath>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <bitset>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+//#include <ext/pb_ds/assoc_container.hpp>
+//using namespace __gnu_pbds;
+using namespace std;
+typedef pair<int, int> pii;
+typedef pair<int, string> pis;
+typedef pair<int, char> pic;
+typedef pair<pii, int> piii;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef unsigned int uint;
+typedef pair<ll, ll> pll;
+typedef pair<ull, ull> pull;
+//#define max(n, m) ((n>m)?n:m)
+//#define min(n, m) ((n<m)?n:m)
+#define f first
+#define s second
+
+ifstream fin("marathon.in");
+ofstream fout("marathon.out");
+
+int n, q, tot = 0;
+int nums[100010];
+pii pts[100010];
+int bit[100010];
+int sum(int idx)
+{
+    int ans = 0;
+    idx ++;
+    while(idx > 0)
+    {
+        ans += bit[idx];
+        idx -= idx & (-idx);
+    }
+    return ans;
+}
+void updateB(int idx, int val)
+{
+    idx ++;
+    while(idx <= n)
+    {
+        bit[idx] += val;
+        idx += idx & (-idx);
+    }
+}
+// updates value at upIdx to val.
+void update(int* tree, int l, int r, int curIdx, int upIdx, int val)
+{
+    if(l == r)
+    {
+        tree[curIdx] = val;
+        nums[upIdx] = val;
+        return;
+    }
+    int mid = (l + r) / 2;
+    if(upIdx >= l && upIdx <= mid)
+        update(tree, l, mid, curIdx * 2 + 1, upIdx, val);
+    else
+        update(tree, mid + 1, r, curIdx * 2 + 2, upIdx, val);
+    tree[curIdx] = min(tree[curIdx * 2 + 1], tree[curIdx * 2 + 2]);
+}
+// get the min from lq to rq in the array
+int minQ(int* tree, int l, int r, int lq, int rq, int curIdx)
+{
+    if(lq == rq)
+        return nums[lq];
+    if(r < lq || l > rq)
+        return INFINITY;
+    if(lq <= l && rq >= r)
+        return tree[curIdx];
+    int mid = (l + r) / 2;
+    return min(minQ(tree, l, mid, lq, rq, curIdx * 2 + 1), minQ(tree, mid + 1, r, lq, rq, curIdx * 2 + 2));
+}
+// recursive function useful for making segment tree
+int makeTreeRec(int nums[], int* tree, int l, int r, int curIdx)
+{
+    if(l == r)
+    {
+        tree[curIdx] = nums[l];
+        return tree[curIdx];
+    }
+    int mid = (l + r) / 2;
+    tree[curIdx] = min(makeTreeRec(nums, tree, l, mid, curIdx * 2 + 1), makeTreeRec(nums, tree, mid + 1, r, curIdx * 2 + 2));
+    return tree[curIdx];
+}
+// main function to make segment tree
+int* makeTree(int nums[], int n)
+{
+    int size = 2 * (int)pow(2, (int)ceil(log2(n))) + 5;
+    int* tree = new int[size];
+    makeTreeRec(nums, tree, 0, n - 1, 0);
+    return tree;
+}
+
+int dist(pii p1, pii p2)
+{
+    return abs(p2.f - p1.f) + abs(p2.s - p1.s);
+}
+int main()
+{
+    int a, b, c;
+    char ch;
+    fin >> n >> q;
+    for(int i = 0; i < n; i ++)
+        fin >> pts[i].f >> pts[i].s;
+    for(int i = 0; i < n-1; i ++)
+        updateB(i+1, dist(pts[i], pts[i+1]));
+    for(int i = 1; i < n-1; i ++)
+        nums[i] = dist(pts[i-1], pts[i+1]) - dist(pts[i-1], pts[i]) - dist(pts[i], pts[i+1]);
+    int* seg = makeTree(nums, n);
+    for(int i = 0; i < q; i ++)
+    {
+        fin >> ch;
+        if(ch == 'U')
+        {
+            fin >> a >> b >> c; a--;
+            if(a != 0) updateB(a, -dist(pts[a-1], pts[a]) + dist(pts[a-1], {b, c}));
+            if(a != n-1) updateB(a+1, -dist(pts[a], pts[a+1]) + dist({b, c}, pts[a+1]));
+            pts[a] = {b, c};
+            if(a > 1) update(seg, 0, n-1, 0, a-1, dist(pts[a-2], pts[a]) - dist(pts[a-2], pts[a-1]) - dist(pts[a-1], pts[a]));
+            if(a > 0 && a < n-1) update(seg, 0, n-1, 0, a, dist(pts[a-1], pts[a+1]) - dist(pts[a-1], pts[a]) - dist(pts[a], pts[a+1]));
+            if(a < n-2) update(seg, 0, n-1, 0, a+1, dist(pts[a], pts[a+2]) - dist(pts[a], pts[a+1]) - dist(pts[a+1], pts[a+2]));
+        }
+        else
+        {
+            fin >> a >> b; a--; b--;
+            fout << sum(b) - sum(a) + min(0, minQ(seg, 0, n-1, a+1, b-1, 0)) << "\n";
+        }
+    }
+}
