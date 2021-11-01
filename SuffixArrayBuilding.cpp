@@ -2,11 +2,17 @@ int n, idxAll, num, pw;
 piii all[2000010], other[2000010];
 vector<piii> all2[2000010];
 string st;
-int pre[2000010][23];
+int pre[2000010][23], idx[26];
+set<char> let;
 void suf()
 {
     for(int i = 0; i < n; i ++)
-        pre[i][0] = st[i]-'a';
+        let.insert(st[i]);
+    num = 0;
+    for(auto it : let)
+        idx[it-'a'] = num++;
+    for(int i = 0; i < n; i ++)
+        pre[i][0] = idx[st[i]-'a'];
     for(int i = 1; i <= pw; i ++)
     {
         idxAll = 0;
