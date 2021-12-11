@@ -54,18 +54,6 @@ struct ss
             idx += idx & (-idx);
         }
     }
-    int bs(int l, int r, int idx)
-    {
-        int mid = (l + r) / 2;
-        if(l == r) return mid + 1;
-        if(l == r - 1)
-        {
-            if(sum(bit, r) == idx) return r + 1;
-            return r;
-        }
-        if(sum(bit, mid) <= idx) return bs(mid, r, idx);
-        return bs(l, mid - 1, idx);
-    }
     // regular set functions
     set<int>::iterator find(int num) { return nums.find(num); }
     set<int>::iterator lower_bound(int num) { return nums.lower_bound(num); }
@@ -94,12 +82,23 @@ struct ss
             return -1;
         return sum(bit, num - 1);
     }
-    // gets the iterator of the element at a specific index (0-indexed) in O((log n) * (log n)), returns end of set if idx is invalid
+    // gets the iterator of the element at a specific index (0-indexed) in O((log n)), returns end of set if idx is invalid
     set<int>::iterator at(int idx)
     {
         if(idx < 0 || idx >= nums.size())
             return nums.end();
-        return nums.find(bs(0, mx, idx));
+        idx++;
+        int pw = 1, cur = 0, curIdx = 0;
+        while(bit[pw] < idx)
+            pw <<= 1;
+        pw >>= 1; cur = pw; curIdx = bit[cur];
+        while(pw > 1 && curIdx < idx)
+        {
+            pw >>= 1;
+            if(curIdx + bit[cur|pw] < idx)
+             cur = cur|pw, curIdx += bit[cur];
+        }
+        return nums.find(cur);
     }
 };
 
