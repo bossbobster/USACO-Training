@@ -48,20 +48,20 @@ typedef complex<double> cd;
 #define input() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 
 int sz[100010];
-set<int> adj[100010];
-vector<int> tree[100010];
+set<int> tree[100010];
+vector<int> adj[100010];
 int p[100010];
 int dfs1(int cur, int par)
 {
     sz[cur] = 1;
-    for(auto nx : adj[cur])
+    for(auto nx : tree[cur])
         if(nx != par)
             sz[cur] += dfs1(nx, cur);
     return sz[cur];
 }
 int dfs2(int cur, int par, int n)
 {
-    for(auto nx : adj[cur])
+    for(auto nx : tree[cur])
         if(nx != par && sz[nx] > n/2)
             return dfs2(nx, cur, n);
     return cur;
@@ -71,11 +71,11 @@ void make(int cur, int par)
     int cent = dfs2(cur, par, dfs1(cur, par));
     if(par == -1) par = cent;
     p[cent] = par;
-    if(par != cent) tree[par].push_back(cent);
-    while(!adj[cent].empty())
+    if(par != cent) adj[par].push_back(cent);
+    while(!tree[cent].empty())
     {
-        int nx = *adj[cent].begin();
-        adj[cent].erase(nx), adj[nx].erase(cent), make(nx, cent);
+        int nx = *tree[cent].begin();
+        tree[cent].erase(nx), tree[nx].erase(cent), make(nx, cent);
     }
 }
 
@@ -87,7 +87,7 @@ int main()
     for(int i = 0; i < n-1; i ++)
     {
         cin >> a >> b;
-        adj[a].insert(b); adj[b].insert(a);
+        tree[a].insert(b); tree[b].insert(a);
     }
     make(0, -1);
     return 0;
