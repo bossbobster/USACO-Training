@@ -1,7 +1,5 @@
 # USACO-Training 
 
-These are the answers in C++ to some of the questions from the training tab on the USACO (United States Computing Olympiad)
-website (usaco.org). The solutions pass all of the test cases in all of the problems solved, and all of the file names are
-the names of the corresponding problems.
+These are the solutions in C++ to some of the problems from previous USACO (United States Computing Olympiad) contests (http://usaco.org/index.php?page=contests), as well as a few problems from the training page provided (http://usaco.org/index.php?page=training). The solutions pass all of the test cases in at least most of the problems solved (unless otherwise specified).
 
-For some problems, I have also tried various data structures and algorithms, and I've collected runing tests outputs to be able to measure time and memory impact of specific approaches (they are usually found in a comment at the end of the file).
+Most problems also have a comment with the commit specifying any important details about the solution, and in some rare cases there are comments in my code. Runtime is also sometimes included if it is important or interesting.
