@@ -51,12 +51,8 @@ int main()
     while(idx1 >= 0)
     {
         set<int>::iterator it = bessie2.lower_bound(elsie[idx1]);
-        set<int>::iterator it2 = bessie2.end();
-        it2 --;
-        if(*it == *(bessie2.begin())) { rightWins[idx1] = total; idx1 --; bessie2.erase(it2); continue; }
-        it --;
-        if(*it > *it2) bessie2.erase(it2);
-        else { bessie2.erase(it); total ++; }
+        if(*it == *(bessie2.begin())) bessie2.erase(prev(bessie2.end()));
+        else { bessie2.erase(prev(it)); total ++; }
         rightWins[idx1] = total;
         idx1 --;
     }
