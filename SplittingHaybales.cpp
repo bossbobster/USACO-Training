@@ -59,7 +59,7 @@ int main()
         pre[i+1] = pre[i]+(ll)nums[i];
     }
     //precompute stuff taking advantage of nice number patterns and amortization
-    tot = min(n, 190); sz = n/tot; sz2 = min(n, 400); mxx = 0;
+    tot = min(n, 170); sz = n/tot; sz2 = min(n, 400); mxx = 0;
     const int numm = 40;
     int tot = 0;
     for(int i = 0; i < n; i += sz)
@@ -67,7 +67,7 @@ int main()
         spot[i] = 1;
         vl = ((i==0)?nums[i]:nums[i-1]);
         mxx = vl;
-        mx = min(sz2*vl, mxx)+3;
+        mx = min(sz2*vl, mxx);
         szz[i] = mx;
         tot += mx*2+1;
     }
